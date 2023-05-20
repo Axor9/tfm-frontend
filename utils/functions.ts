@@ -1,5 +1,6 @@
+import Web3 from 'web3'
 import { useWeb3Store } from '~~/store/web3'
-import { State } from '~~/types/type'
+import { Option, State } from '~~/types/type'
 
 export const getCurrentState = async (): Promise<State> => {
     const web3Store = useWeb3Store()
@@ -19,6 +20,17 @@ export const getCurrentState = async (): Promise<State> => {
             enemies: currentStateResponse.level.enemies,
         },
         options: currentStateResponse.options,
+        enemy: currentStateResponse.enemy,
     }
     return currentState
+}
+
+export const hexToString = (data: string): string => {
+    const config = useRuntimeConfig()
+    const provider = new Web3.providers.HttpProvider(
+        config.public.network.provider
+    )
+
+    const web3 = new Web3(provider)
+    return web3.utils.hexToUtf8(data)
 }

@@ -40,6 +40,7 @@ export default class MetamaskImpl implements Metamask {
         from: string
     ) {
         try {
+            console.log(this.wallet.utils.toWei(amount.toString()))
             const config = useRuntimeConfig()
             const votingJson: any = await $fetch('/Voting.json')
 
@@ -47,7 +48,10 @@ export default class MetamaskImpl implements Metamask {
                 votingJson.abi,
                 contractAddress
             )
-            contract.methods.vote(candidate, amount).send({ from })
+            contract.methods.vote(candidate).send({
+                from,
+                value: this.wallet.utils.toWei(amount.toString(), 'ether'),
+            })
         } catch (error) {
             console.error(error)
         }

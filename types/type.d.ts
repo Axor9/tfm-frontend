@@ -21,7 +21,7 @@ export interface Treasure {
 }
 
 export interface Player {
-    health: any
+    health: number
     weapons: string[]
 }
 
@@ -36,6 +36,7 @@ export interface State {
     voting: string
     level: Level
     options: Option[]
+    enemy: string
 }
 
 export interface Option {

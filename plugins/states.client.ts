@@ -6,7 +6,6 @@ import { getCurrentState } from '~~/utils/functions'
 export default defineNuxtPlugin(async (nuxtApp) => {
     const config = useRuntimeConfig()
     const web3Store = useWeb3Store()
-
     const provider = new Web3.providers.HttpProvider(
         config.public.network.provider
     )
@@ -17,10 +16,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         gameStatesJSON.abi,
         config.public.contract.address
     )
-    // web3Store.contractInstance = new web3.eth.Contract(
-    //     config.public.contract.abi,
-    //     config.public.contract.address
-    // )
-
+    // // web3Store.contractInstance = new web3.eth.Contract(
+    // //     config.public.contract.abi,
+    // //     config.public.contract.address
+    // // )
     web3Store.currentState = await getCurrentState()
 })
