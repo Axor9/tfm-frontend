@@ -1,7 +1,7 @@
 import { useWeb3Store } from '~~/store/web3'
 import Web3 from 'web3'
 
-import { getCurrentState } from '~~/utils/functions'
+import { getCurrentState, getStates } from '~~/utils/functions'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
     const config = useRuntimeConfig()
@@ -21,4 +21,5 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     // //     config.public.contract.address
     // // )
     web3Store.currentState = await getCurrentState()
+    web3Store.states = await getStates()
 })

@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import { useWeb3Store } from '~~/store/web3'
-import { Level, Option, State, Weapon } from '~~/types/type'
+import { HistoryState, Level, Option, State, Weapon } from '~~/types/type'
 
 export const getCurrentState = async (): Promise<State> => {
     const web3Store = useWeb3Store()
@@ -26,29 +26,41 @@ export const getCurrentState = async (): Promise<State> => {
     return currentState
 }
 
-export const getStates = async (): Promise<State[]> => {
+export const getStates = async (): Promise<HistoryState[]> => {
     const web3Store = useWeb3Store()
     const stateResponse = await web3Store.contractInstance?.methods
         .getGameStates()
         .call()
 
-    const states = stateResponse.map((state: State) => {
-        return {
-            id: state.id,
-            state: state.state,
-            voting: state.voting,
-            player: {
-                health: state.player.health,
-                weapons: state.player.weapons,
-            },
-            level: {
-                name: state.level.name,
-                enemies: state.level.enemies,
-            },
-            options: state.options,
-            enemy: state.enemy,
-        }
-    })
+    const states: HistoryState[] = await Promise.all(
+        stateResponse.map(async (state: State): Promise<HistoryState> => {
+            let winnerOption: Option | undefined
+            try {
+                winnerOption = await web3Store.contractInstance?.methods
+                    .getWinnerOption(state.id)
+                    .call()
+            } catch (error) {
+                console.error(error)
+            }
+
+            return {
+                id: state.id,
+                state: state.state,
+                voting: state.voting,
+                player: {
+                    health: state.player.health,
+                    weapons: state.player.weapons,
+                },
+                level: {
+                    name: state.level.name,
+                    enemies: state.level.enemies,
+                },
+                options: state.options,
+                enemy: state.enemy,
+                winnerOption,
+            }
+        })
+    )
 
     return states
 }
@@ -63,7 +75,7 @@ export const hexToString = (data: string): string => {
     return web3.utils.hexToUtf8(data)
 }
 
-export const generateText = (state: State): string => {
+export const generateText = (state: HistoryState): string | undefined => {
     if (state.state == StatesTypes.Treasure) {
         return 'The hero finds a treasure.'
     }
@@ -76,39 +88,36 @@ export const generateText = (state: State): string => {
         return `
         The hero encounters a ${state.enemy} that attacks him. What will he do?`
     }
-    return 'hola'
+    return
 }
 
-export const generateWinnerOptionText = async (
-    state: State
-): Promise<string | undefined> => {
-    const web3Store = useWeb3Store()
+export const generateWinnerOptionText = (
+    state: HistoryState
+): string | undefined => {
     const config = useRuntimeConfig()
     const provider = new Web3.providers.HttpProvider(
         config.public.network.provider
     )
-    console.log(state.id)
-    const web3 = new Web3(provider)
-    const winnerOption: Option = await web3Store.contractInstance?.methods
-        .getWinnerOption(state.id)
-        .call()
 
-    if (winnerOption.optionType == OptionTypes.Treasure) {
+    const web3 = new Web3(provider)
+    if (!state.winnerOption) return
+
+    if (state.winnerOption.optionType == OptionTypes.Treasure) {
         return 'The hero has opened the chest.'
     }
 
-    if (winnerOption.optionType == OptionTypes.Weapon) {
+    if (state.winnerOption.optionType == OptionTypes.Weapon) {
         const weapon = web3.eth.abi.decodeParameter(
             weaponEncodeTypes,
-            winnerOption.data ?? ''
+            state.winnerOption.data ?? ''
         ) as Weapon
         return `The hero atacks the ${state.enemy} with a ${weapon.name}.`
     }
 
-    if (winnerOption.optionType == OptionTypes.Level) {
+    if (state.winnerOption.optionType == OptionTypes.Level) {
         const level = web3.eth.abi.decodeParameter(
             levelEncodeTypes,
-            winnerOption.data ?? ''
+            state.winnerOption.data ?? ''
         ) as Level
 
         return `The hero embarks on a journey to the ${level.name}.`

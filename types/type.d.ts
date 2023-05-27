@@ -40,6 +40,10 @@ export interface State {
     enemy: string
 }
 
+export interface HistoryState extends State {
+    winnerOption?: Option
+}
+
 export interface Option {
     optionType: OptionTypes
     data?: string
