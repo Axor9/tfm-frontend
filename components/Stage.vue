@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useWeb3Store } from '~~/store/web3'
-import { Option } from '~~/types/type'
 
 const web3Store = useWeb3Store()
-const options = ref<Option[]>(web3Store.currentState?.options ?? [])
 const stage = ref<string>('default')
 const stageImage = computed(() => {
     if (web3Store.currentState?.state == StatesTypes.Rest) {
@@ -16,12 +14,10 @@ const stageImage = computed(() => {
     }
 
     if (web3Store.currentState?.state == StatesTypes.Battle) {
-        if (web3Store.currentState.enemy === 'mimic') {
-            stage.value = 'mimic'
-            return
-        }
-
-        stage.value = `${web3Store.currentState.level.name}_${web3Store.currentState.enemy}`
+        stage.value =
+            web3Store.currentState.enemy === 'mimic'
+                ? 'mimic'
+                : `${web3Store.currentState.level.name}_${web3Store.currentState.enemy}`
     }
 
     if (web3Store.currentState?.state == StatesTypes.Treasure) {

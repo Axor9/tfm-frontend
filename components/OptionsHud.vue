@@ -12,7 +12,7 @@ const amount = ref<number>(0)
         <input
             class="Options-amount"
             type="number"
-            placeholder="Vote amount in ETH"
+            placeholder="Vote amount"
             v-model="amount"
         />
         <div v-for="option in options" :key="option.option">
@@ -24,14 +24,14 @@ const amount = ref<number>(0)
 <style lang="scss">
 .Options {
     background-color: #8c8686;
+    border: #c6e4e2 solid 12px;
     height: 31.25rem;
     padding: 30px;
-    position: absolute;
-    right: 0;
-    margin: 0 60px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     &-amount {
         width: 100%;

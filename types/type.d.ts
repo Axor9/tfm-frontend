@@ -31,6 +31,7 @@ export interface Level {
 }
 
 export interface State {
+    id: number
     state: StatesTypes
     player: Player
     voting: string

@@ -2,6 +2,8 @@
 import { useWeb3Store } from '~~/store/web3'
 
 const web3Store = useWeb3Store()
+const weapons = ref<string[]>(web3Store.currentState?.player.weapons ?? [])
+
 const health = ref<number>(web3Store.currentState?.player.health ?? 0)
 const healthBarPath = ref<string>(
     health.value > 75
@@ -47,16 +49,28 @@ const healthBarPath = ref<string>(
                 alt="health_image"
             />
         </div>
+        <div class="Hud-weapons">
+            <div
+                class="Hud-weapons-weapon"
+                v-for="weapon in weapons"
+                :key="weapon"
+            >
+                <img
+                    class="Hud-health-bar"
+                    :src="`images/weapons/${weapon}.png`"
+                    alt="health_image"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
 <style lang="scss">
 .Hud {
-    position: absolute;
-    top: 0;
-    left: 0;
-
     &-health {
+        position: absolute;
+        top: 0;
+        left: 0;
         display: flex;
         flex-direction: row;
         &-player {
@@ -65,6 +79,20 @@ const healthBarPath = ref<string>(
         &-bar {
             width: 65%;
             padding: 25px 0;
+        }
+    }
+
+    &-weapons {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        margin: 0px 30px;
+
+        display: flex;
+        flex-direction: row;
+        &-weapon {
+            width: 100%;
         }
     }
 }

@@ -1,10 +1,17 @@
 <script setup lang="ts">
-onMounted(async () => {})
+import { useWeb3Store } from '~~/store/web3'
+
+const web3Store = useWeb3Store()
 </script>
 
 <template>
     <div class="Index">
-        <options-hud />
+        <div
+            class="Index-options"
+            v-if="(web3Store.currentState?.options.length ?? 0) > 0"
+        >
+            <options-hud />
+        </div>
         <div class="Game">
             <hud />
             <stage />
@@ -18,6 +25,12 @@ onMounted(async () => {})
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &-options {
+        position: absolute;
+        right: 0;
+        margin: 0 60px;
+    }
 }
 
 .Game {

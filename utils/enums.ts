@@ -5,3 +5,10 @@ export enum StatesTypes {
     Final,
     Init,
 }
+
+export enum OptionTypes {
+    Skip,
+    Level,
+    Weapon,
+    Treasure,
+}
