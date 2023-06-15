@@ -30,12 +30,7 @@ const stageImage = computed(() => {
 
 <template>
     <div class="Stage">
-        <img
-            v-if="web3Store.currentState"
-            class="Stage-img"
-            :src="stageImage"
-            alt="level image"
-        />
+        <img class="Stage-img" :src="stageImage" alt="level image" />
     </div>
 </template>
 
