@@ -27,25 +27,25 @@ const healthBarPath = ref<string>(
             <img
                 v-if="healthBarPath === 'health_full'"
                 class="Hud-health-bar"
-                src="images/health/health_full.png"
+                src="/images/health/health_full.png"
                 alt="health_image"
             />
             <img
                 v-if="healthBarPath === 'health_mid'"
                 class="Hud-health-bar"
-                src="images/health/health_mid.png"
+                src="/images/health/health_mid.png"
                 alt="health_image"
             />
             <img
                 v-if="healthBarPath === 'health_midLow'"
                 class="Hud-health-bar"
-                src="images/health/health_midLow.png"
+                src="/images/health/health_midLow.png"
                 alt="health_image"
             />
             <img
                 v-if="healthBarPath === 'health_low'"
                 class="Hud-health-bar"
-                src="images/health/health_low.png"
+                src="/images/health/health_low.png"
                 alt="health_image"
             />
         </div>
@@ -57,7 +57,7 @@ const healthBarPath = ref<string>(
             >
                 <img
                     class="Hud-health-bar"
-                    :src="`images/weapons/${weapon}.png`"
+                    :src="`/images/weapons/${weapon}.png`"
                     alt="health_image"
                 />
             </div>
