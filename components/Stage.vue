@@ -1,36 +1,49 @@
 <script setup lang="ts">
 import { useWeb3Store } from '~~/store/web3'
+import { State } from '~~/types/type'
 
 const web3Store = useWeb3Store()
 const stage = ref<string>('default')
+const currentState = ref<State | undefined>(web3Store.currentState)
+
 const stageImage = computed(() => {
-    if (web3Store.currentState?.state == StatesTypes.Rest) {
+    if (currentState.value?.state == StatesTypes.Rest) {
         stage.value = 'level_pick'
     }
 
-    if (web3Store.currentState?.state == StatesTypes.Final) {
-        stage.value =
-            web3Store.currentState.player.health <= 0 ? 'game_over' : ''
+    if (currentState.value?.state == StatesTypes.Final) {
+        stage.value = currentState.value.player.health <= 0 ? 'game_over' : ''
     }
 
-    if (web3Store.currentState?.state == StatesTypes.Battle) {
+    if (currentState.value?.state == StatesTypes.Battle) {
         stage.value =
-            web3Store.currentState.enemy === 'mimic'
+            currentState.value.enemy === 'mimic'
                 ? 'mimic'
-                : `${web3Store.currentState.level.name}_${web3Store.currentState.enemy}`
+                : `${currentState.value.level.name}_${currentState.value.enemy}`
     }
 
-    if (web3Store.currentState?.state == StatesTypes.Treasure) {
+    if (currentState.value?.state == StatesTypes.Treasure) {
         stage.value = 'treasure'
     }
 
     return `images/stages/${stage.value}.png`
 })
+
+const pageMounted = ref<boolean>(false)
+
+onMounted(() => {
+    pageMounted.value = true
+})
 </script>
 
 <template>
     <div class="Stage">
-        <img class="Stage-img" :src="stageImage" alt="level image" />
+        <img
+            v-if="pageMounted"
+            class="Stage-img"
+            :src="stageImage"
+            alt="level image"
+        />
     </div>
 </template>
 

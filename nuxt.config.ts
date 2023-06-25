@@ -2,9 +2,6 @@
 export default defineNuxtConfig({
     modules: ['@pinia/nuxt'],
     runtimeConfig: {
-        app: {
-            baseURL: '/tfm-frontend',
-        },
         public: {
             network: {
                 id: '',

@@ -1,3 +1,5 @@
+import { StatesTypes } from '~~/utils/enums'
+
 export interface Weapon {
     name: string
     damage: number

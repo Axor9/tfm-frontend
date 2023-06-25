@@ -16,10 +16,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         gameStatesJSON.abi,
         config.public.contract.address
     )
-    // // web3Store.contractInstance = new web3.eth.Contract(
-    // //     config.public.contract.abi,
-    // //     config.public.contract.address
-    // // )
+
     try {
         web3Store.currentState = await getCurrentState()
         web3Store.states = await getStates()

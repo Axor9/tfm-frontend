@@ -14,6 +14,12 @@ const healthBarPath = ref<string>(
         ? 'health_midLow'
         : 'health_low'
 )
+
+const pageMounted = ref<boolean>(false)
+
+onMounted(() => {
+    pageMounted.value = true
+})
 </script>
 
 <template>
@@ -25,27 +31,9 @@ const healthBarPath = ref<string>(
                 alt="player_icon"
             />
             <img
-                v-if="healthBarPath === 'health_full'"
+                v-if="pageMounted"
                 class="Hud-health-bar"
-                src="/images/health/health_full.png"
-                alt="health_image"
-            />
-            <img
-                v-if="healthBarPath === 'health_mid'"
-                class="Hud-health-bar"
-                src="/images/health/health_mid.png"
-                alt="health_image"
-            />
-            <img
-                v-if="healthBarPath === 'health_midLow'"
-                class="Hud-health-bar"
-                src="/images/health/health_midLow.png"
-                alt="health_image"
-            />
-            <img
-                v-if="healthBarPath === 'health_low'"
-                class="Hud-health-bar"
-                src="/images/health/health_low.png"
+                :src="`/images/health/${healthBarPath}.png`"
                 alt="health_image"
             />
         </div>
