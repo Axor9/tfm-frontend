@@ -12,10 +12,10 @@ declare module '@nuxt/schema' {
             id: string
             name: string
             provider: string
+            chainId: number
         }
         contract: {
             address: string
-            abi: any[]
         }
     }
 }

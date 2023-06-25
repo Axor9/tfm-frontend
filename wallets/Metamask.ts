@@ -14,8 +14,10 @@ export default class MetamaskImpl implements Metamask {
 
     async connectWallet() {
         const config = useRuntimeConfig()
-        console.log(await this.wallet.eth.getChainId())
-        if ((await this.wallet.eth.getChainId()) !== 1337) {
+        if (
+            (await this.wallet.eth.getChainId()) !==
+            useRuntimeConfig().public.network.chainId
+        ) {
             await this.provider.request({
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: config.public.network.id }],
