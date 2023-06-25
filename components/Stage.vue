@@ -12,7 +12,8 @@ const stageImage = computed(() => {
     }
 
     if (currentState.value?.state == StatesTypes.Final) {
-        stage.value = currentState.value.player.health <= 0 ? 'game_over' : ''
+        stage.value =
+            currentState.value.player.health <= 0 ? 'game_over' : 'win'
     }
 
     if (currentState.value?.state == StatesTypes.Battle) {

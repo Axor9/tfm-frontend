@@ -88,6 +88,12 @@ export const generateText = (state: HistoryState): string | undefined => {
         return `
         The hero encounters a ${state.enemy} that attacks him. What will he do?`
     }
+
+    if (state.state == StatesTypes.Final) {
+        return state.player.health <= 0
+            ? 'The hero has passed away'
+            : 'The hero has successfully completed his adventure.'
+    }
     return
 }
 
