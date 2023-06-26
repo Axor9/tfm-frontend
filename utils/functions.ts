@@ -95,7 +95,12 @@ export const generateOptionText = (option: Option) => {
     const text = optionTexts.find((x) => x.option == option.optionType)
 
     if (option.optionType == OptionTypes.Weapon) {
-        return text?.text.replace('{0}', hexToString(option.option)) ?? ''
+        return (
+            text?.text.replace(
+                '{0}',
+                hexToString(option.option).replace('Weapon', '')
+            ) ?? ''
+        )
     }
 
     if (option.optionType == OptionTypes.Level) {
