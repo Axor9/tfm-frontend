@@ -1,0 +1,22 @@
+[
+    {
+        "option": 0,
+        "text": "Skip",
+        "text2": ""
+    },
+    {
+        "option": 1,
+        "text": "Head to the {0}",
+        "text2": "The hero embarks on a journey to the {0}."
+    },
+    {
+        "option": 2,
+        "text": "Attack with the {0}",
+        "text2": "The hero atacks the {0} with a {1}."
+    },
+    {
+        "option": 3,
+        "text": "Open the chest",
+        "text2": "The hero has opened the chest."
+    }
+]

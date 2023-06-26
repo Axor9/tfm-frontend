@@ -1,0 +1,19 @@
+[
+    {
+        "state": 0,
+        "text": "The hero finds themselves on a path that forks into three. Which path will he choose?"
+    },
+    {
+        "state": 1,
+        "text": "The hero encounters a {0} that attacks him. What will he do?"
+    },
+    {
+        "state": 2,
+        "text": "The hero finds a treasure."
+    },
+    {
+        "state": 3,
+        "text": "The hero has passed away",
+        "text2": "The hero has successfully completed his adventure."
+    }
+]

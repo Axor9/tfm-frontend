@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useWeb3Store } from '~~/store/web3'
 import { Option } from '~~/types/type'
-import { hexToString } from '~~/utils/functions'
+import { generateOptionText, hexToString } from '~~/utils/functions'
 
 const props = defineProps<{ option: Option; amount: number }>()
 
 const web3Store = useWeb3Store()
 const config = useRuntimeConfig()
 
-const optionText = ref<string>(hexToString(props.option.option))
+const optionText = ref<string>(generateOptionText(props.option))
 
 const selectOption = () => {
     web3Store.wallet?.voteOption(

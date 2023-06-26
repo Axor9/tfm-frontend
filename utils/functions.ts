@@ -1,6 +1,8 @@
 import Web3 from 'web3'
 import { useWeb3Store } from '~~/store/web3'
 import { HistoryState, Level, Option, State, Weapon } from '~~/types/type'
+import stateTexts from '../data/texts.json'
+import optionTexts from '../data/optionTexts.json'
 
 export const getCurrentState = async (): Promise<State> => {
     const web3Store = useWeb3Store()
@@ -76,25 +78,36 @@ export const hexToString = (data: string): string => {
 }
 
 export const generateText = (state: HistoryState): string | undefined => {
-    if (state.state == StatesTypes.Treasure) {
-        return 'The hero finds a treasure.'
-    }
-
-    if (state.state == StatesTypes.Rest) {
-        return 'The hero finds themselves on a path that forks into three. Which path will he choose?'
-    }
+    const text = stateTexts.find((x) => x.state == state.state)
 
     if (state.state == StatesTypes.Battle) {
-        return `
-        The hero encounters a ${state.enemy} that attacks him. What will he do?`
+        return text?.text.replace('{0}', state.enemy)
     }
 
     if (state.state == StatesTypes.Final) {
-        return state.player.health <= 0
-            ? 'The hero has passed away'
-            : 'The hero has successfully completed his adventure.'
+        return state.player.health <= 0 ? text?.text : text?.text2
     }
-    return
+
+    return text?.text
+}
+
+export const generateOptionText = (option: Option) => {
+    const text = optionTexts.find((x) => x.option == option.optionType)
+
+    if (option.optionType == OptionTypes.Weapon) {
+        return text?.text.replace('{0}', hexToString(option.option)) ?? ''
+    }
+
+    if (option.optionType == OptionTypes.Level) {
+        return (
+            text?.text.replace(
+                '{0}',
+                hexToString(option.option).replace('Level', '')
+            ) ?? ''
+        )
+    }
+
+    return text?.text ?? ''
 }
 
 export const generateWinnerOptionText = (
@@ -108,16 +121,19 @@ export const generateWinnerOptionText = (
     const web3 = new Web3(provider)
     if (!state.winnerOption) return
 
-    if (state.winnerOption.optionType == OptionTypes.Treasure) {
-        return 'The hero has opened the chest.'
-    }
+    const text = optionTexts.find(
+        (x) => x.option == state.winnerOption?.optionType
+    )
 
     if (state.winnerOption.optionType == OptionTypes.Weapon) {
         const weapon = web3.eth.abi.decodeParameter(
             weaponEncodeTypes,
             state.winnerOption.data ?? ''
         ) as Weapon
-        return `The hero atacks the ${state.enemy} with a ${weapon.name}.`
+
+        return text?.text2
+            .replace('{0}', state.enemy)
+            .replace('{1}', weapon.name)
     }
 
     if (state.winnerOption.optionType == OptionTypes.Level) {
@@ -126,8 +142,8 @@ export const generateWinnerOptionText = (
             state.winnerOption.data ?? ''
         ) as Level
 
-        return `The hero embarks on a journey to the ${level.name}.`
+        return text?.text2.replace('{0}', level.name)
     }
 
-    return
+    return text?.text2
 }
